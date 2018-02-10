@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RpcClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcClientHandler.class);
-    private static final ConcurrentHashMap<String,RpcResult> RPC_REQUSET = new ConcurrentHashMap<String, RpcResult>();
+    public static final ConcurrentHashMap<String,RpcResult> RPC_REQUSET = new ConcurrentHashMap<String, RpcResult>();
 
     protected void channelRead0(ChannelHandlerContext ctx, RpcResponse msg) throws Exception {
         String requestId = msg.getRequestId();

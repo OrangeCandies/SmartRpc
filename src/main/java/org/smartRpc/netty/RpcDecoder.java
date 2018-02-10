@@ -27,7 +27,7 @@ public class RpcDecoder extends ByteToMessageDecoder{
             in.resetReaderIndex();
             return;
         }
-        byte[] jsonMessage = new byte[messageLength+1];
+        byte[] jsonMessage = new byte[messageLength];
         in.readBytes(jsonMessage);
         Object o = SerializationUtil.fromJson(jsonMessage, jsonClass);
         out.add(o);

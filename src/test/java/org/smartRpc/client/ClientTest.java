@@ -4,8 +4,6 @@ import org.smartRpc.bean.RpcResult;
 import org.smartRpc.proxy.IAsyCallback;
 import org.smartRpc.proxy.IAsyncObjectProxy;
 
-import java.util.concurrent.ExecutionException;
-
 public class ClientTest {
 
     public static void main(String[] args) {
@@ -75,6 +73,11 @@ public class ClientTest {
         CostTimeServer costTimeServer = RpcProxyFactory.create(CostTimeServer.class);
         int c = costTimeServer.add(3,new Integer(3));
         System.out.println(c);
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 // 耗时异步服务测试
         IAsyncObjectProxy asyncProxy = RpcProxyFactory.createAsyncProxy(CostTimeServer.class);
         RpcResult rpcResult = asyncProxy.call(new IAsyCallback() {
@@ -89,13 +92,6 @@ public class ClientTest {
             }
         },"add", 1, 3);
         System.out.println("Call succeed");
-        try {
-            int s = (int) rpcResult.get();
-            System.out.println(s);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+
     }
 }

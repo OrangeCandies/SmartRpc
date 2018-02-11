@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartRpc.bean.RpcRequset;
 import org.smartRpc.bean.RpcResult;
-import org.smartRpc.netty.NettyClient;
+import org.smartRpc.client.ClientManager;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -49,37 +49,26 @@ public class ProxyObject<T> implements InvocationHandler,IAsyncObjectProxy {
         request.setParameters(args);
 
 
-        NettyClient client = new NettyClient("127.0.0.1",8080);
-        client.start();
-        RpcResult result = client.sent(request);
+        ClientManager manager = new ClientManager();
+        RpcResult result = manager.sendRequset(request);
         //此方法会被异步阻塞直到结果返回
         return result.get();
     }
 
     @Override
     public RpcResult call(String methodName, Object... arg) {
-        NettyClient client = new NettyClient("127.0.0.1",8080);
-        try {
-            client.start();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        ClientManager manager = new ClientManager();
         RpcRequset requset = createRequest(tClass.getName(),methodName,arg);
-        RpcResult re = client.sent(requset);
+        RpcResult re = manager.sendRequset(requset);
         // 此方法会直接返回
         return re;
     }
 
     @Override
     public RpcResult call(IAsyCallback callback, String methodName, Object... arg) {
-        NettyClient client = new NettyClient("127.0.0.1",8080);
-        try {
-            client.start();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        ClientManager manager = new ClientManager();
         RpcRequset requset = createRequest(tClass.getName(),methodName,arg);
-        RpcResult re = client.sent(requset);
+        RpcResult re = manager.sendRequset(requset);
         re.setCallback(callback);
         // 此方法会直接返回
         return re;

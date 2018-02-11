@@ -15,6 +15,7 @@ import org.smartRpc.manager.ServiceManager;
 import org.smartRpc.netty.RpcDecoder;
 import org.smartRpc.netty.RpcEncoder;
 import org.smartRpc.netty.RpcServerHandler;
+import org.smartRpc.util.ConfigUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -27,7 +28,7 @@ public class Server implements ApplicationContextAware,InitializingBean{
     private int port;
     private EventLoopGroup workGroup = new NioEventLoopGroup();
     private EventLoopGroup bossGroup = new NioEventLoopGroup();
-
+    private ServiceRegistry serviceRegistry = new ServiceRegistry(ConfigUtil.ZK_REGISTRY_ADDRESS);
     public Server(int port){
         this.port = port;
     }
@@ -65,6 +66,10 @@ public class Server implements ApplicationContextAware,InitializingBean{
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
 
         try {
+            if(serviceRegistry != null){
+                serviceRegistry.registry("127.0.0.1:"+port);
+            }
+
             ChannelFuture f = bootstrap.bind(port).sync();
         } catch (InterruptedException e) {
             e.printStackTrace();

@@ -18,7 +18,7 @@ public class ClientThreadPool {
             synchronized (ClientThreadPool.class){
                 if(threadPool == null){
                     threadPool = new ThreadPoolExecutor(4,16,3*60*1000, TimeUnit.MILLISECONDS,
-                            new ArrayBlockingQueue<>(32));
+                            new ArrayBlockingQueue<Runnable>(32));
                 }
             }
         }

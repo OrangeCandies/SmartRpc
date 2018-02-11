@@ -1,5 +1,7 @@
 package org.smartRpc.bean;
 
+import org.smartRpc.proxy.IAsyCallback;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +18,7 @@ public class RpcResult implements Future<Object> {
     private RpcRequset rpcRequset = null;
     private Sync sync = null;
 
+    private IAsyCallback callback;
     public RpcResult(RpcRequset requset){
         sync = new Sync();
         this.rpcRequset = requset;
@@ -64,10 +67,27 @@ public class RpcResult implements Future<Object> {
     }
 
     public void done(RpcResponse response){
+        // 设置response
         this.response = response;
+        // 释放同步锁
         sync.release(1);
+        // 执行回调结果
+        runCallBack();
 
     }
+
+    private void runCallBack(){
+        if(!response.isError()){
+            callback.success(response.getResult());
+        }else{
+            callback.fail(new Exception(response.getError()));
+        }
+    }
+
+    public void setCallback(IAsyCallback callback){
+        this.callback = callback;
+    }
+
 
     /**
      * 借助AQS实现的一个锁 完成对Future.get()调用的阻塞

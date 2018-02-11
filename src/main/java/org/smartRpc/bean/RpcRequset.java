@@ -1,5 +1,7 @@
 package org.smartRpc.bean;
 
+import java.util.Arrays;
+
 public class RpcRequset {
 
     private String requestId;
@@ -46,5 +48,16 @@ public class RpcRequset {
 
     public void setParameters(Object[] parameters) {
         this.parameters = parameters;
+    }
+
+    @Override
+    public String toString() {
+        return "RpcRequset{" +
+                "requestId='" + requestId + '\'' +
+                ", className='" + className + '\'' +
+                ", methodName='" + methodName + '\'' +
+                ", parameterTypes=" + Arrays.toString(parameterTypes) +
+                ", parameters=" + Arrays.toString(parameters) +
+                '}';
     }
 }

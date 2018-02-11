@@ -8,14 +8,14 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class RpcServer {
+public class ServerThreadPool {
 
-    private final static Logger LOGGER  = LoggerFactory.getLogger(RpcServer.class);
+    private final static Logger LOGGER  = LoggerFactory.getLogger(ServerThreadPool.class);
     private volatile static Executor threadpool = null;
 
     public static void summit(Runnable tast){
         if(threadpool == null){
-            synchronized (RpcServer.class){
+            synchronized (ServerThreadPool.class){
                 if(threadpool == null){
                     // 初始化一个核心线程数为10 最大线程数为40，存活5分钟 ，最大大小为256的任务队列
                     threadpool = new ThreadPoolExecutor(10,40,5*60*1000,

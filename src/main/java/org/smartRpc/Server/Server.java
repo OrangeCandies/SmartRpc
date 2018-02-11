@@ -9,8 +9,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.apache.commons.collections4.MapUtils;
+import org.smartRpc.bean.RpcRequset;
 import org.smartRpc.bean.RpcResponse;
-import org.smartRpc.bean.RpcResult;
 import org.smartRpc.manager.ServiceManager;
 import org.smartRpc.netty.RpcDecoder;
 import org.smartRpc.netty.RpcEncoder;
@@ -43,7 +43,7 @@ public class Server implements ApplicationContextAware,InitializingBean{
         Map<String,Object> serviceBean = applicationContext.getBeansWithAnnotation(RpcService.class);
         if(!MapUtils.isEmpty(serviceBean)){
             for(Object o : serviceBean.values()){
-                String interfaceName = serviceBean.getClass().getAnnotation(RpcService.class).value().getName();
+                String interfaceName = o.getClass().getAnnotation(RpcService.class).value().getName();
                 ServiceManager.setServiceClass(interfaceName,o);
             }
         }
@@ -57,7 +57,7 @@ public class Server implements ApplicationContextAware,InitializingBean{
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline()
-                                .addLast(new RpcDecoder(RpcResult.class))
+                                .addLast(new RpcDecoder(RpcRequset.class))
                                 .addLast(new RpcEncoder(RpcResponse.class))
                                 .addLast(new RpcServerHandler());
                     }

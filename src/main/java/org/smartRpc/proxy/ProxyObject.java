@@ -13,9 +13,12 @@ import java.util.UUID;
 public class ProxyObject<T> implements InvocationHandler,IAsyncObjectProxy {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxyObject.class);
+
     private Class<T> tClass;
 
     public ProxyObject(Class<T> tClass) {
+
+
         this.tClass = tClass;
     }
 
@@ -47,6 +50,7 @@ public class ProxyObject<T> implements InvocationHandler,IAsyncObjectProxy {
 
 
         NettyClient client = new NettyClient("127.0.0.1",8080);
+        client.start();
         RpcResult result = client.sent(request);
         //此方法会被异步阻塞直到结果返回
         return result.get();
@@ -55,6 +59,11 @@ public class ProxyObject<T> implements InvocationHandler,IAsyncObjectProxy {
     @Override
     public RpcResult call(String methodName, Object... arg) {
         NettyClient client = new NettyClient("127.0.0.1",8080);
+        try {
+            client.start();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         RpcRequset requset = createRequest(tClass.getName(),methodName,arg);
         RpcResult re = client.sent(requset);
         // 此方法会直接返回
@@ -76,7 +85,7 @@ public class ProxyObject<T> implements InvocationHandler,IAsyncObjectProxy {
 
         return request;
     }
-   // todo 测试此函数的作用
+   // todo 测试
     private Class<?> getClassType(Object obj){
         Class<?> classType = obj.getClass();
         String typeName = classType.getName();

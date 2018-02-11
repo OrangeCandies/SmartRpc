@@ -44,7 +44,7 @@ public class NettyClient {
         final CountDownLatch count = new CountDownLatch(1);
         RpcResult result = new RpcResult(requset);
         RpcClientHandler.RPC_REQUSET.put(requset.getRequestId(),result);
-        channel.write(requset).addListener(new ChannelFutureListener() {
+        channel.writeAndFlush(requset).addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 count.countDown();

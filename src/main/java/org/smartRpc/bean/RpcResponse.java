@@ -32,4 +32,13 @@ public class RpcResponse {
     public boolean isError(){
         return error != null;
     }
+
+    @Override
+    public String toString() {
+        return "RpcResponse{" +
+                "requestId='" + requestId + '\'' +
+                ", error=" + error +
+                ", result=" + result +
+                '}';
+    }
 }

@@ -13,9 +13,12 @@ public class RpcEncoder extends MessageToByteEncoder {
         this.jsonClass = jsonClass;
     }
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
+        System.out.println(" pass PpcEndoder"+jsonClass.getSimpleName());
+        System.out.println(msg);
         if(jsonClass.isInstance(msg)){
             byte[] dates = SerializationUtil.toJson(msg).getBytes();
             out.writeInt(dates.length);
+            System.out.println(dates.length);
             out.writeBytes(dates);
         }
     }

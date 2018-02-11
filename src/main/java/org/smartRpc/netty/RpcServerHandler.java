@@ -6,7 +6,7 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartRpc.Server.RpcServer;
+import org.smartRpc.Server.ServerThreadPool;
 import org.smartRpc.bean.RpcRequset;
 import org.smartRpc.bean.RpcResponse;
 import org.smartRpc.manager.ServiceManager;
@@ -20,7 +20,9 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequset> {
 
 
     protected void channelRead0(final ChannelHandlerContext ctx, final RpcRequset msg) throws Exception {
-        RpcServer.summit(new Runnable() {
+        System.out.println("Taild catch message");
+        System.out.println(msg);
+        ServerThreadPool.summit(new Runnable() {
             public void run() {
                 final RpcResponse response = new RpcResponse();
                 response.setRequestId(msg.getRequestId());
@@ -60,6 +62,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequset> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
+        cause.printStackTrace();
         ctx.close();
     }
 }

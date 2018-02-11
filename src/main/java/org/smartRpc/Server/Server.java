@@ -35,7 +35,7 @@ public class Server implements ApplicationContextAware,InitializingBean{
 
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         start();
     }
 
@@ -56,7 +56,7 @@ public class Server implements ApplicationContextAware,InitializingBean{
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
+                    protected void initChannel(SocketChannel ch) {
                         ch.pipeline()
                                 .addLast(new RpcDecoder(RpcRequset.class))
                                 .addLast(new RpcEncoder(RpcResponse.class))

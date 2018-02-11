@@ -12,7 +12,7 @@ public class RpcEncoder extends MessageToByteEncoder {
     public RpcEncoder(Class<?> jsonClass){
         this.jsonClass = jsonClass;
     }
-    protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
+    protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) {
 
         if(jsonClass.isInstance(msg)){
             byte[] dates = SerializationUtil.toJson(msg).getBytes();

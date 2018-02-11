@@ -29,7 +29,7 @@ public class NettyClient {
                 .channel(NioSocketChannel.class)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
+                    protected void initChannel(SocketChannel ch) {
                         ch.pipeline()
                                 .addLast(new RpcEncoder(RpcRequset.class))
                                 .addLast(new RpcDecoder(RpcResponse.class))
@@ -46,7 +46,7 @@ public class NettyClient {
         RpcClientHandler.RPC_REQUSET.put(requset.getRequestId(),result);
         channel.writeAndFlush(requset).addListener(new ChannelFutureListener() {
             @Override
-            public void operationComplete(ChannelFuture future) throws Exception {
+            public void operationComplete(ChannelFuture future) {
                 count.countDown();
             }
         });

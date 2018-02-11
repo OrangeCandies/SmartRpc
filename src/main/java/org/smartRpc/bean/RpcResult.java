@@ -2,10 +2,8 @@ package org.smartRpc.bean;
 
 import org.smartRpc.proxy.IAsyCallback;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
 /**
@@ -44,7 +42,7 @@ public class RpcResult implements Future<Object> {
         return sync.isDone();
     }
 
-    public Object get() throws InterruptedException, ExecutionException {
+    public Object get() {
         sync.acquire(1);
         if(this.response != null){
             return response.getResult();
@@ -53,7 +51,7 @@ public class RpcResult implements Future<Object> {
         }
     }
 
-    public Object get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+    public Object get(long timeout, TimeUnit unit) throws InterruptedException {
         boolean succeed = sync.tryAcquireNanos(1, unit.toNanos(timeout));
         if(succeed){
             if(this.response != null){

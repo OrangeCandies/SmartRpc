@@ -10,7 +10,7 @@ public interface IAsyncObjectProxy {
      * @param arg 参数列表
      * @return RpcResult 可以通过设置回调函数setCallBack 当此次调用结果放回的时候会主动调用回调函数
      */
-    public RpcResult call(String methodName,Object...arg);
+    RpcResult call(String methodName, Object... arg);
 
 
     /**
@@ -20,7 +20,7 @@ public interface IAsyncObjectProxy {
      * @param arg  参数列表
      * @return RpcResult 封装了调用结果
      */
-    public RpcResult call(IAsyCallback callback,String methodName,Object...arg);
+    RpcResult call(IAsyCallback callback, String methodName, Object... arg);
 
 
 }

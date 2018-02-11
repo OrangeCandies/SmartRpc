@@ -19,7 +19,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequset> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcServerHandler.class);
 
 
-    protected void channelRead0(final ChannelHandlerContext ctx, final RpcRequset msg) throws Exception {
+    protected void channelRead0(final ChannelHandlerContext ctx, final RpcRequset msg) {
 
         ServerThreadPool.summit(new Runnable() {
             public void run() {
@@ -35,7 +35,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequset> {
                 response.setResult(result);
                 ctx.writeAndFlush(response).addListener(new GenericFutureListener<Future<? super Void>>() {
 
-                    public void operationComplete(Future<? super Void> future) throws Exception {
+                    public void operationComplete(Future<? super Void> future) {
                        LOGGER.debug("send response for requset with id="+response.getRequestId());
                     }
                 });

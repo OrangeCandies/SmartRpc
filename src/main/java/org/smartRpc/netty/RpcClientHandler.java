@@ -14,7 +14,7 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcClientHandler.class);
     public static final ConcurrentHashMap<String,RpcResult> RPC_REQUSET = new ConcurrentHashMap<String, RpcResult>();
 
-    protected void channelRead0(ChannelHandlerContext ctx, RpcResponse msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, RpcResponse msg) {
         String requestId = msg.getRequestId();
         RpcResult rpcResult = RPC_REQUSET.get(requestId);
         RPC_REQUSET.remove(requestId);

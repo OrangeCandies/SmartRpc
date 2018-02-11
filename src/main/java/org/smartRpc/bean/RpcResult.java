@@ -77,6 +77,10 @@ public class RpcResult implements Future<Object> {
     }
 
     private void runCallBack(){
+        // 当回调函数为设置的时候方法直接返回
+        if(callback == null){
+            return;
+        }
         if(!response.isError()){
             callback.success(response.getResult());
         }else{

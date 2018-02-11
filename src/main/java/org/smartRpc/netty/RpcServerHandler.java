@@ -20,8 +20,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequset> {
 
 
     protected void channelRead0(final ChannelHandlerContext ctx, final RpcRequset msg) throws Exception {
-        System.out.println("Taild catch message");
-        System.out.println(msg);
+
         ServerThreadPool.summit(new Runnable() {
             public void run() {
                 final RpcResponse response = new RpcResponse();

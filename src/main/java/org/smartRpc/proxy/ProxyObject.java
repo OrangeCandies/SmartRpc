@@ -70,6 +70,21 @@ public class ProxyObject<T> implements InvocationHandler,IAsyncObjectProxy {
         return re;
     }
 
+    @Override
+    public RpcResult call(IAsyCallback callback, String methodName, Object... arg) {
+        NettyClient client = new NettyClient("127.0.0.1",8080);
+        try {
+            client.start();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        RpcRequset requset = createRequest(tClass.getName(),methodName,arg);
+        RpcResult re = client.sent(requset);
+        re.setCallback(callback);
+        // 此方法会直接返回
+        return re;
+    }
+
     private RpcRequset createRequest(String className, String methodName, Object[] args) {
         RpcRequset request = new RpcRequset();
         request.setRequestId(UUID.randomUUID().toString());
@@ -85,7 +100,6 @@ public class ProxyObject<T> implements InvocationHandler,IAsyncObjectProxy {
 
         return request;
     }
-   // todo 测试
     private Class<?> getClassType(Object obj){
         Class<?> classType = obj.getClass();
         String typeName = classType.getName();

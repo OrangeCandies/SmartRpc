@@ -15,7 +15,7 @@ public class RpcDecoder extends ByteToMessageDecoder{
         jsonClass = decoderClass;
     }
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        System.out.println("pass rpcDecoder "+jsonClass.getSimpleName());
+
         if(in.readableBytes() < 4){
             return;
         }

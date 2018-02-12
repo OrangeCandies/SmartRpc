@@ -50,7 +50,7 @@ public class ClientTest {
 
 //多线程回调版本
           Thread[] thread = new Thread[100];
-        for(int i=0;i<100;i++){
+        for(int i=0;i<10;i++){
             thread[i] = new Thread(()->{
                 IAsyncObjectProxy asyncProxy = RpcProxyFactory.createAsyncProxy(CostTimeServer.class);
                 IAsyCallback iAsyCallback = new IAsyCallback() {
@@ -67,6 +67,11 @@ public class ClientTest {
                 asyncProxy.call(iAsyCallback,"add",1,2);
             });
             thread[i].start();
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
 // 耗时 同步服务测试

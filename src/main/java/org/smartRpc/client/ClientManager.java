@@ -14,7 +14,7 @@ public class ClientManager {
 
     private  static ServiceDiscovery discovery = new ServiceDiscovery(ConfigUtil.ZK_REGISTRY_ADDRESS);
     private static NettyClient nettyClient = connectNetty();
-
+    private static boolean isConnected = true;
 
     // 超时关闭NettyCLient 每次调用发送会更新技术值
     private static ScheduledExecutorService timer = Executors.newSingleThreadScheduledExecutor();
@@ -26,7 +26,6 @@ public class ClientManager {
             public void run() {
                 int value = count.incrementAndGet();
                 if(value == 10){
-                    System.out.println("Closed");
                     nettyClient.close();
                     timer.shutdown();
                 }
@@ -41,15 +40,16 @@ public class ClientManager {
         int port = Integer.parseInt(info[1]);
         nettyClient = new NettyClient(host,port);
         nettyClient.start();
+        isConnected = true;
         return  nettyClient;
     }
 
 
     public static RpcResult sendRequset(RpcRequset requset){
         RpcResult result = null;
-        // 当Netty未初始化 或者 netty以及超时关闭 或者 连接远程出现故障
+        // 当Netty未初始化 或者 netty以及超时关闭
         // 重新寻找服务器
-        if(nettyClient == null || nettyClient.isClosed()||nettyClient.isWrong()){
+        if(nettyClient == null || nettyClient.isClosed()||!isConnected){
             nettyClient = connectNetty();
         }
         count.set(0);
@@ -62,5 +62,10 @@ public class ClientManager {
         return null;
     }
 
+    // 提供重连通知的模块  主要提供给pipeline的末端Handler捕捉到异常的时候通知
+    public static void tryToReconnect(){
+        isConnected = false;
+        nettyClient = connectNetty();
+    }
 
 }

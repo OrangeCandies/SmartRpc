@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartRpc.bean.RpcResponse;
 import org.smartRpc.bean.RpcResult;
+import org.smartRpc.client.ClientManager;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,7 +25,8 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
-        ctx.close();
+        // 连接中断 通知Client重新寻找可用服务器和重连
+        ClientManager.tryToReconnect();
         LOGGER.error("error in rpcClientHandler");
     }
 

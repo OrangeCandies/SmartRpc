@@ -46,9 +46,6 @@ public class NettyClient {
 
         }
     }
-    public boolean isWrong(){
-       return channel.isDone() == true && channel.cause() != null;
-    }
     public RpcResult sent(RpcRequset requset){
         final CountDownLatch count = new CountDownLatch(1);
         RpcResult result = new RpcResult(requset);

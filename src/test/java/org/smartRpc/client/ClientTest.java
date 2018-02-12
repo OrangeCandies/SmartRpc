@@ -1,6 +1,5 @@
 package org.smartRpc.client;
 
-import org.smartRpc.bean.RpcResult;
 import org.smartRpc.proxy.IAsyCallback;
 import org.smartRpc.proxy.IAsyncObjectProxy;
 
@@ -50,10 +49,10 @@ public class ClientTest {
 //        }
 
 //多线程回调版本
-/*        Thread[] thread = new Thread[100];
+          Thread[] thread = new Thread[100];
         for(int i=0;i<100;i++){
             thread[i] = new Thread(()->{
-                IAsyncObjectProxy asyncProxy = RpcProxyFactory.createAsyncProxy(Hello.class);
+                IAsyncObjectProxy asyncProxy = RpcProxyFactory.createAsyncProxy(CostTimeServer.class);
                 IAsyCallback iAsyCallback = new IAsyCallback() {
                     @Override
                     public void success(Object result) {
@@ -65,21 +64,22 @@ public class ClientTest {
                         System.out.println("failure");
                     }
                 };
-                asyncProxy.call(iAsyCallback,"hello","liuhui");
+                asyncProxy.call(iAsyCallback,"add",1,2);
             });
             thread[i].start();
-        }*/
+
+        }
 // 耗时 同步服务测试
-        CostTimeServer costTimeServer = RpcProxyFactory.create(CostTimeServer.class);
+/*        CostTimeServer costTimeServer = RpcProxyFactory.create(CostTimeServer.class);
         int c = costTimeServer.add(3,new Integer(3));
         System.out.println(c);
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 // 耗时异步服务测试
-        IAsyncObjectProxy asyncProxy = RpcProxyFactory.createAsyncProxy(CostTimeServer.class);
+/*        IAsyncObjectProxy asyncProxy = RpcProxyFactory.createAsyncProxy(CostTimeServer.class);
         RpcResult rpcResult = asyncProxy.call(new IAsyCallback() {
             @Override
             public void success(Object result) {
@@ -91,7 +91,7 @@ public class ClientTest {
                 System.out.println("Failure");
             }
         },"add", 1, 3);
-        System.out.println("Call succeed");
+        System.out.println("Call succeed");*/
 
     }
 }

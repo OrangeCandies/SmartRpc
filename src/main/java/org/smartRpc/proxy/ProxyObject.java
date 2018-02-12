@@ -47,28 +47,23 @@ public class ProxyObject<T> implements InvocationHandler,IAsyncObjectProxy {
         request.setMethodName(method.getName());
         request.setParameterTypes(method.getParameterTypes());
         request.setParameters(args);
-
-
-        ClientManager manager = new ClientManager();
-        RpcResult result = manager.sendRequset(request);
+        RpcResult result = ClientManager.sendRequset(request);
         //此方法会被异步阻塞直到结果返回
         return result.get();
     }
 
     @Override
     public RpcResult call(String methodName, Object... arg) {
-        ClientManager manager = new ClientManager();
         RpcRequset requset = createRequest(tClass.getName(),methodName,arg);
-        RpcResult re = manager.sendRequset(requset);
+        RpcResult re =  ClientManager.sendRequset(requset);
         // 此方法会直接返回
         return re;
     }
 
     @Override
     public RpcResult call(IAsyCallback callback, String methodName, Object... arg) {
-        ClientManager manager = new ClientManager();
         RpcRequset requset = createRequest(tClass.getName(),methodName,arg);
-        RpcResult re = manager.sendRequset(requset);
+        RpcResult re = ClientManager.sendRequset(requset);
         re.setCallback(callback);
         // 此方法会直接返回
         return re;

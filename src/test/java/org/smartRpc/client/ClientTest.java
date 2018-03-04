@@ -1,11 +1,17 @@
 package org.smartRpc.client;
 
+import org.smartRpc.bean.RpcResult;
 import org.smartRpc.proxy.IAsyCallback;
 import org.smartRpc.proxy.IAsyncObjectProxy;
 
 public class ClientTest {
 
+    /**
+     *    此方法包含了整个框架被使用的方法和细节
+     * @param args
+     */
     public static void main(String[] args) {
+        //  同步RPC调用
 //        Hello hello = RpcProxyFactory.create(Hello.class);
 //        String liuhui = hello.hello("liuhui");
 //        System.out.println(liuhui);
@@ -24,6 +30,7 @@ public class ClientTest {
 //            }
 //        });
 //
+        // 异步RPC调用
 //        asyncProxy.call(new IAsyCallback() {
 //            @Override
 //            public void success(Object result) {
@@ -37,7 +44,7 @@ public class ClientTest {
 //            }
 //        },"hello","LiuHui");
 /*//
-多线程调用版本*/
+        多线程调用版本同步RPC */
 //Thread[] thread = new Thread[100];
 //        for(int i=0;i<100;i++){
 //            thread[i] = new Thread(()->{
@@ -48,7 +55,7 @@ public class ClientTest {
 //            thread[i].start();
 //        }
 
-//多线程回调版本
+//多线程异步PRC版本 (超时版本)
           Thread[] thread = new Thread[100];
         for(int i=0;i<10;i++){
             thread[i] = new Thread(()->{
@@ -64,7 +71,9 @@ public class ClientTest {
                         System.out.println("failure");
                     }
                 };
-                asyncProxy.call(iAsyCallback,"add",1,2);
+                RpcResult result = asyncProxy.call(iAsyCallback, "add", 1, 2);
+                // result中可以查询结果
+
             });
             thread[i].start();
             try {

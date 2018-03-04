@@ -21,6 +21,7 @@ public class ProxyObject<T> implements InvocationHandler,IAsyncObjectProxy {
 
         this.tClass = tClass;
     }
+    
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
